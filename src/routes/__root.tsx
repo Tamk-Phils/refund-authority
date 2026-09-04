@@ -13,27 +13,34 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { PageShell } from "@/components/page-shell";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+    <PageShell>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 text-center py-20">
+        <div className="max-w-md">
+          <p className="eyebrow text-primary">Error 404</p>
+          <h1 className="mt-4 text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+            Page not found
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            The page you're looking for doesn't exist, has been moved, or is currently unavailable.
+          </p>
+          <div className="mt-8">
+            <Button asChild size="lg">
+              <Link to="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Return to homepage
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
 
@@ -45,33 +52,32 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
+    <PageShell>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 text-center py-20">
+        <div className="max-w-md">
+          <p className="eyebrow text-destructive">Application Error</p>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+            This page didn't load
+          </h1>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            Something went wrong on our end. You can try refreshing or head back home.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button
+              onClick={() => {
+                router.invalidate();
+                reset();
+              }}
+            >
+              Try again
+            </Button>
+            <Button asChild variant="outline">
+              <a href="/">Go home</a>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
 
